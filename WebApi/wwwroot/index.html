@@ -1,0 +1,245 @@
+﻿<!doctype html>
+<html lang="pt-br">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+
+    <title>Desafio</title>
+</head>
+<body>
+    <template id="productRowTemplate">
+        <tr id="product-{{id}}" data-key="{{id}}" class="product-table-item">
+            <th scope="row">{{id}}</th>
+            <td>{{name}}</td>
+            <td>{{price}}</td>
+            <td>{{brand}}</td>
+            <td>{{createdAt}}</td>
+            <td>{{updatedAt}}</td>
+        </tr>
+    </template>
+    <template id="productFormTemplate">
+        <form id="productForm" class="form-group product-form">
+            <input id="productId" class="form-control" type="text" value="{{id}}" hidden="hidden" />
+            <input id="productName" class="form-control" type="text" value="{{name}}" placeholder="Place name here" />
+            <input id="productBrand" class="form-control" type="text" value="{{brand}}" placeholder="Place brand here" />
+            <input id="productPrice" class="form-control" type="number" value="{{price}}" placeholder="Place price here" />
+            <div class="modal-footer">
+                <button id="productFormConfirmBtn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+                <button id="productFormDeleteBtn" type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+            </div>
+        </form>
+    </template>
+    <h1>Products!</h1>
+    <table id="productTable" class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Brand</th>
+                <th scope="col">CreatedAt</th>
+                <th scope="col">UpdatedAt</th>
+            </tr>
+        </thead>
+        <tbody id="productTableBody">
+        </tbody>
+    </table>
+    <!-- Button trigger modal -->
+    <button id="productFormCreateBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal">
+        Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="formModalLabel">Edit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="productModalBody" class="modal-body">
+                    
+                </div>                
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->    
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script type="module">
+        //TODO: use JQuery
+        function ProductApi() {
+            const baseUrl = "http://localhost:5261/api/Product"
+            const fetchGet = async (url) => {
+                const response = await fetch(`${baseUrl}/${url}`)
+                const value = await response.json()
+                return value
+            }
+
+            this.get = async (id) => {
+                return fetchGet(id)
+            }
+            this.list = async () => {
+                return fetchGet('')
+            }
+            this.update = async (id, product) => {
+                const url = `${baseUrl}/${id}`
+                const body = JSON.stringify(product)
+                let options = {
+                    body: body,
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                };
+                const response = await fetch(url, options)
+                if (response.status === 400) {
+                    //TODO:
+                    return null;
+                }
+                if (response.status === 500) {
+                    //TODO:
+                    return null;
+                }
+                return await api.get(id)
+            }
+            this.delete = async (id) => {
+                const url = `${baseUrl}/${id}`
+
+                const options = {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                };
+                const response = await fetch(url, options)
+                if (response.status === 400) {
+                    //TODO:
+                    return false;
+                }
+                return true;
+            }
+            this.create = async (product) => {
+                const url = baseUrl
+                const body = JSON.stringify(product)
+
+                let options = {
+                    body: body,
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                };
+                const response = await fetch(url, options)
+                if (response.status === 400) {
+                    //TODO:
+                    return;
+                }
+                const value = await response.json()
+                return value                
+            }
+        }
+        function ProductTemplate(product,template) {
+            const keys = Object.keys(product)            
+            let result = template
+            for (let i = 0; i < keys.length; i++) {
+                const k = keys[i]
+                result = result.replaceAll(`{{${k}}}`,product[k])
+            }
+            return result
+        }
+        function ProductTable(products) {
+            const rows = products.map((value) => { return ProductTemplate(value, $("#productRowTemplate").html()) })
+            console.log('rows:', rows)
+            $('#productTableBody').html(rows.join(''))
+        }
+        window.ProductTemplate = ProductTemplate
+        const api = new ProductApi()
+        window.api = api
+        const products = [];
+        async function init() {
+            const response = await api.list()
+            console.log('response from api:', response);
+            for (let i = 0; i < response.length; i++) {
+                products.push(response[i])
+            }
+            ProductTable(products)            
+            document.querySelectorAll('.product-table-item').forEach(el => {                
+                el.addEventListener('click', (e) => {
+                    const id = parseInt(el.getAttribute('data-key'),10)
+                    const product = products.find(p => p.id === id)
+                    $('#productModalBody').html(ProductTemplate(product, $('#productFormTemplate').html()))
+                    $('#productFormConfirmBtn')
+                        .on('click', async (e) => {
+                            const model = {
+                                id: $('#productId').val(),
+                                name: $('#productName').val(),
+                                brand: $('#productBrand').val(),
+                                price: $('#productPrice').val(),
+                            }
+                            const newProduct = await api.update(model.id, model)
+                            if (newProduct) {
+                                for (let i = 0; i < products.length; ++i) {
+                                    if (products[i].id !== newProduct.id) {
+                                        continue
+                                    }
+                                    products[i] = newProduct
+                                }                                                                
+                                ProductTable(products)
+                            }
+                        })
+                    $('#productFormDeleteBtn')
+                        .on('click', (e) => {
+                            const id = parseInt(el.getAttribute('data-key'))
+                            const isDeleted = api.delete(id)
+                            if (isDeleted) {
+                                const productIndexToRemove = products.findIndex(p => p.id === id)
+                                products.splice(productIndexToRemove, 1)
+                                ProductTable(products)                                
+                            }
+                        })
+                    $('#formModal').modal('show')
+                })
+            })
+            $('#productFormCreateBtn')
+                .on('click', (e) => {
+                    onCreate(e)
+                })
+        }
+        function onCreate(e) {
+            $('#productModalBody').html(ProductTemplate({
+                name: '',
+                brand: '',
+                price: 0.0                
+            }, $('#productFormTemplate').html()))
+            $('#productFormConfirmBtn')
+                .on('click', async (e) => {
+                    const model = {
+                        name: $('#productName').val(),
+                        brand: $('#productBrand').val(),
+                        price: $('#productPrice').val(),
+                    }
+                    const newProduct = await api.create(model)
+                    if (newProduct) {
+                        products.push(newProduct)                        
+                        ProductTable(products)
+                    }
+                })
+            $('#formModal').modal('show')
+        }
+        (async () => {
+            await init()
+            
+        })()
+    </script>
+</body>
+</html>
