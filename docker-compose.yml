@@ -4,7 +4,8 @@ services:
   desafiodotnet:
     image: ${DOCKER_REGISTRY-}desafiodotnet
     build:
-      context: ./DesafioDotNet/
+      context: .
+      dockerfile: DesafioDotNet/Dockerfile
     environment:
         DATABASE_URL: "Server=host.docker.internal,1233;Database=DesafioDb;User Id=sa;Password=!P4ssword;"      
   db:    

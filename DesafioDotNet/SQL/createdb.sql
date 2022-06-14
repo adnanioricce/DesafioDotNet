@@ -4,10 +4,10 @@ GO
 IF EXISTS (
     SELECT [name]
         FROM sys.databases
-        WHERE [name] = N'Desafio'
+        WHERE [name] = N'DesafioDb'
 )
 DECLARE @DatabaseName nvarchar(50)
-SET @DatabaseName = N'Desafio'
+SET @DatabaseName = N'DesafioDb'
 
 DECLARE @SQL varchar(max)
 
@@ -23,15 +23,6 @@ GO
 CREATE DATABASE DesafioDb
 GO
 USE DesafioDb
-GO
--- Helpers
-CREATE FUNCTION str2uniq(@s VARCHAR(50)) RETURNS UNIQUEIDENTIFIER AS BEGIN
-    -- just in case it came in with 0x prefix or dashes...
-    SET @s = replace(replace(@s,'0x',''),'-','')
-    -- inject dashes in the right places
-    SET @s = stuff(stuff(stuff(stuff(@s,21,0,'-'),17,0,'-'),13,0,'-'),9,0,'-')
-    RETURN cast(@s AS uniqueidentifier)
-END
 GO
 
 CREATE TABLE [dbo].[Products](
@@ -50,9 +41,10 @@ CREATE OR ALTER PROCEDURE seed_products AS BEGIN
     BEGIN
         SET @i = @i + 1
         SET @currentDate = GETUTCDATE()
-        INSERT INTO [dbo].[Products] VALUES(NEWID(),@currentDate,@currentDate,FORMATMESSAGE('Product N %d',@i),0.99 * @i,'Default Brand')
+        INSERT INTO [dbo].[Products] VALUES(@currentDate,@currentDate,FORMATMESSAGE('Product N %d',@i),0.99 * @i,'Default Brand')
     END
 END
 GO
 EXEC seed_products
 GO
+SELECT * FROM [dbo].[Products]

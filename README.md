@@ -1,3 +1,42 @@
+# EDIT: Como compilar e executar o projeto
+## Requisitos:
+- .net core SDK 6.0
+- SQL Server
+- ou somente docker, se preferir
+
+## configurando o banco de dados
+### Localmente
+para configurar o banco de dados, execute o script em SQL/createdb.sql
+### com docker
+> OBS: você também pode configurar o banco de dados e executar a api com docker-compose
+execute a seguinte linha.
+Sim, a porta é necessária.
+```bash
+docker run -dt --name desafiodotnetdb -p 1233:1433 adnanioricce/desafiodotnetdb
+```
+## executando a Api
+### A partir de uma imagem docker
+```bash
+docker run -dt --name desafiodotnet -p 6060:80 adnanioricce/desafiodotnet
+```
+### com docker compose
+na raiz do projeto, digite a seguinte linha e tecle enter:
+```bash
+docker-compose up --build
+```
+isso vai compilar a api e construir um banco de dados DesafioDb com a Tabela Produto(vazia).
+### com a cli do dotnet
+vá até a pasta do projeto web DesafioDotNet e digite a seguinte linha:
+```bash
+cd DesafioDotNet
+sqlcmd -S .\SQLEXPRESS -i SQL/createdb.sql
+dotnet watch run
+```
+## Swagger
+para visualziar os endpoints da API vá até /swagger
+## Tabela
+para visualizar a tabela, vá até /
+
 # Desafio .NET
 Desafio de contratação Khipo. Realize um fork deste repositório e faça as etapas referentes a sua vaga. O intuito desse teste é ser algo simples, porém suficiente para validar a qualidade do seu código.
 
