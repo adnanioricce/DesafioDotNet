@@ -17,7 +17,7 @@ docker run -dt --name desafiodotnetdb -p 1233:1433 adnanioricce/desafiodotnetdb
 ## executando a Api
 ### A partir de uma imagem docker
 ```bash
-docker run -dt --name desafiodotnet -p 6060:80 adnanioricce/desafiodotnet
+docker run -dt --name desafiodotnet -p 6060:80 -e DATABASE_URL="Server=host.docker.internal,1233;Database=DesafioDb;User Id=sa;Password=!P4ssword" adnanioricce/desafiodotnet
 ```
 ### com docker compose
 na raiz do projeto, digite a seguinte linha e tecle enter:

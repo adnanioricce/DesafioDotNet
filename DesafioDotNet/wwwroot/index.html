@@ -1,4 +1,10 @@
 ﻿<!doctype html>
+<style>
+    .product-table-item:hover {
+        color: yellowgreen;
+        cursor: pointer;
+    }
+</style>
 <html lang="pt-br">
 <head>    
     <meta charset="utf-8">
@@ -189,7 +195,7 @@
                                         continue
                                     }
                                     products[i] = newProduct
-                                }                                                                
+                                }
                                 ProductTable(products)
                             }
                         })
@@ -200,7 +206,10 @@
                             if (isDeleted) {
                                 const productIndexToRemove = products.findIndex(p => p.id === id)
                                 products.splice(productIndexToRemove, 1)
-                                ProductTable(products)                                
+                                const newProducts = products.sort((l, r) => {
+                                    return l.createdAt - r.createdAt;
+                                })
+                                ProductTable(newProducts)
                             }
                         })
                     $('#formModal').modal('show')
@@ -226,8 +235,11 @@
                     }
                     const newProduct = await api.create(model)
                     if (newProduct) {
-                        products.push(newProduct)                        
-                        ProductTable(products)
+                        products.push(newProduct)
+                        const newProducts = products.sort((l, r) => {
+                            return l.createdAt - r.createdAt
+                        })
+                        ProductTable(newProducts)
                     }
                 })
             $('#formModal').modal('show')
