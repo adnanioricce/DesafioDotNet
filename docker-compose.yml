@@ -4,10 +4,12 @@ services:
   desafiodotnet:
     image: ${DOCKER_REGISTRY-}desafiodotnet
     build:
-      context: .
-      dockerfile: DesafioDotNet/Dockerfile
-  db:
-    image: "mcr.microsoft.com/mssql/server"
+      context: ./DesafioDotNet/
+    environment:
+        DATABASE_URL: "Server=host.docker.internal,1233;Database=DesafioDb;User Id=sa;Password=!P4ssword;"      
+  db:    
+    build: 
+        context: DesafioDotNet/SQL/        
     environment:
         SA_PASSWORD: "!P4ssword"
         ACCEPT_EULA: "Y"

@@ -18,11 +18,11 @@ WHERE DBId = DB_ID(@DatabaseName) AND SPId <> @@SPId
 --SELECT @SQL 
 EXEC(@SQL)
 GO
-DROP DATABASE Desafio
+DROP DATABASE DesafioDb
 GO
-CREATE DATABASE Desafio
+CREATE DATABASE DesafioDb
 GO
-USE Desafio
+USE DesafioDb
 GO
 -- Helpers
 CREATE FUNCTION str2uniq(@s VARCHAR(50)) RETURNS UNIQUEIDENTIFIER AS BEGIN
@@ -46,7 +46,7 @@ GO
 CREATE OR ALTER PROCEDURE seed_products AS BEGIN    
     DECLARE @i int = 0
     DECLARE @currentDate DATETIMEOFFSET = GETUTCDATE()     
-    WHILE @i < 20
+    WHILE @i < 5
     BEGIN
         SET @i = @i + 1
         SET @currentDate = GETUTCDATE()
