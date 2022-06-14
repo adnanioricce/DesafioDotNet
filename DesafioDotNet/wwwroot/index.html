@@ -1,14 +1,9 @@
 ﻿<!doctype html>
 <html lang="pt-br">
-<head>
-    <!-- Required meta tags -->
+<head>    
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <script src="settings.js"></script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">    
     <title>Desafio</title>
 </head>
 <body>
@@ -29,14 +24,13 @@
             <input id="productBrand" class="form-control" type="text" value="{{brand}}" placeholder="Place brand here" />
             <input id="productPrice" class="form-control" type="number" value="{{price}}" placeholder="Place price here" />
             <div class="modal-footer">
-                <button id="productFormConfirmBtn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+                <button id="productFormConfirmBtn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Confirm Changes</button>
                 <button id="productFormDeleteBtn" type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
             </div>
         </form>
     </template>
     <div class="row">
-        <h1 class="col-6">Products!</h1>
-        <!-- Button trigger modal -->
+        <h1 class="col-6">Products!</h1>        
         <button id="productFormCreateBtn" type="button" class="col-6 btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal">
             Adicionar Produto
         </button>
@@ -173,7 +167,7 @@
             console.log('response from api:', response);
             for (let i = 0; i < response.length; i++) {
                 products.push(response[i])
-            }
+            }            
             ProductTable(products)            
             document.querySelectorAll('.product-table-item').forEach(el => {                
                 el.addEventListener('click', (e) => {
