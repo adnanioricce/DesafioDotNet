@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  desafiodotnet:
+    image: ${DOCKER_REGISTRY-}desafiodotnet
+    build:
+      context: .
+      dockerfile: DesafioDotNet/Dockerfile
+  db:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+        SA_PASSWORD: "!P4ssword"
+        ACCEPT_EULA: "Y"
+    ports:
+    - "1233:1433"

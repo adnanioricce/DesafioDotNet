@@ -34,7 +34,13 @@
             </div>
         </form>
     </template>
-    <h1>Products!</h1>
+    <div class="row">
+        <h1 class="col-6">Products!</h1>
+        <!-- Button trigger modal -->
+        <button id="productFormCreateBtn" type="button" class="col-6 btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal">
+            Adicionar Produto
+        </button>
+    </div>
     <table id="productTable" class="table">
         <thead>
             <tr>
@@ -48,11 +54,7 @@
         </thead>
         <tbody id="productTableBody">
         </tbody>
-    </table>
-    <!-- Button trigger modal -->
-    <button id="productFormCreateBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal">
-        Launch demo modal
-    </button>
+    </table>    
 
     <!-- Modal -->
     <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
